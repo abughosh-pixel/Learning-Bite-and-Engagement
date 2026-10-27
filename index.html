@@ -229,7 +229,7 @@
     if(sessions.some(([s])=>s===selected))$('sessionFilter').value=selected;
   }
   function init(data){
-    $('distinctLearners').textContent=data.distinctLearners.toLocaleString(); $('detailedSessions').textContent=Object.keys(data.sessions).length; $('annualAttendance').textContent=data.topics.reduce((sum,t)=>sum+(topicAttendance(t)??0),0).toLocaleString();
+    $('distinctLearners').textContent=data.distinctLearners.toLocaleString();  $('annualAttendance').textContent=data.topics.reduce((sum,t)=>sum+(topicAttendance(t)??0),0).toLocaleString();
     renderTopics(data);renderThemes(data);renderClusters(data);renderOrganization(data);renderLearners(data);
     $('clusterFilter').innerHTML='<option value="">All clusters</option>'+ordered(data.clusters).map(([c])=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
     $('themeFilter').innerHTML='<option value="">All themes</option>'+Object.keys(data.themes).map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join('');
