@@ -276,7 +276,7 @@
     const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}}),{threshold:.07});
     document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   }
-  fetch('./data.json?v=20261027-unique660').then(r=>{if(!r.ok)throw Error('Data unavailable');return r.json()}).then(init).catch(e=>{console.error(e);$('explore').insertAdjacentHTML('afterbegin','<div class="container"><p role="alert">The interactive data could not load. Please refresh the page.</p></div>')});
+  fetch('./data.json?v=20261029-contract39').then(r=>{if(!r.ok)throw Error('Data unavailable');return r.json()}).then(init).catch(e=>{console.error(e);$('explore').insertAdjacentHTML('afterbegin','<div class="container"><p role="alert">The interactive data could not load. Please refresh the page.</p></div>')});
   const links=[...document.querySelectorAll('.nav a[href^="#"]')];
   function onScroll(){const max=document.documentElement.scrollHeight-innerHeight;$('progress').style.width=(max?100*scrollY/max:0)+'%';let current='';for(const a of [...links].sort((a,b)=>document.querySelector(a.getAttribute('href')).offsetTop-document.querySelector(b.getAttribute('href')).offsetTop)){const el=document.querySelector(a.getAttribute('href'));if(el&&el.getBoundingClientRect().top<innerHeight*.35)current=a.getAttribute('href')}links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')===current))}
   addEventListener('scroll',onScroll,{passive:true});onScroll();
