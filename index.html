@@ -194,7 +194,7 @@
   const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const pct=(n,total)=>total?((100*n/total).toFixed(1)+'%'):'0%';
   const ordered=(obj)=>Object.entries(obj).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]));
-  const mapped=name=>name!=='Unspecified'&&name!=='Unmapped';
+  const mapped=name=>!['Unspecified','Unmapped','Unclassified'].includes(name);
   const shortNames={'AI in Excel':'AI in Excel','AI in PowerPoint':'AI in PowerPoint','AI for Leaders':'AI for Leaders','AI Agent 1':'Agent 1','AI Agent 2':'Agent 2','AI Agent 3':'Agent 3','AI with Alaa Dalghan':'AI with Alaa','From Pulp To Impact with Sodra':'Paper emissions','How to Deal with mental Clutter':'Mental Clutter','Copilot New Features':'New Copilot','Logistics That Work':'Logistics','Situational Leadership':'Leadership','Personal Branding':'Personal Branding','I Know My GSM':'GSM','Bricks AI':'BRICKS AI','How To Create an Agent':'Create an Agent','From Accounts To Partnerships':'Partnerships','How Digital Content Affect Decision Making Intent':'Digital Content','From KPIs to ROI':'KPIs to ROI','Beyond Compliance':'Beyond Compliance','Introduction to SOP':'S&OP','Modern FP&A 2':'FP&A 2'};
   const topicAttendance=t=>t.allocatedAttendance??t.sessionAttendance??t.attendance??null;
   function renderTopics(data,theme='all'){
@@ -220,7 +220,7 @@
     el.innerHTML=entries.length?entries.map(([name,count])=>`<div class="bar-row"><div class="bar-label"><span title="${esc(name)}">${esc(name)}</span><b>${count}</b></div><div class="bar-bg"><div class="bar-fg" style="width:${100*count/max}%"></div></div></div>`).join(''):'<p class="muted">No attendance matches this selection.</p>';
   }
   function renderOrganization(data){
-    const levels=ordered(data.seniority);
+    const levels=ordered(data.seniority).filter(([level])=>mapped(level));
     const max=Math.max(...Object.values(data.seniority));
     $('gradeBars').innerHTML=levels.map(([level,count])=>`<div class="bar-row"><div class="bar-label"><span>${esc(level)}</span><b>${count}</b></div><div class="bar-bg"><div class="bar-fg" style="width:${100*count/max}%"></div></div></div>`).join('');
     makeBars($('functionBars'),Object.fromEntries(Object.entries(data.functions).filter(([name])=>mapped(name))),Object.keys(data.functions).length);
