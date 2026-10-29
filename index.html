@@ -198,7 +198,7 @@
       <div class="orbit" aria-label="43 Learning Bites for 2026"><div class="orbit-core"><div><strong>43</strong><span>Learning Bites · 2026</span></div></div><span class="orb a" aria-hidden="true"></span><span class="orb b" aria-hidden="true"></span><span class="orb c" aria-hidden="true"></span><span class="orb d" aria-hidden="true"></span></div>
     </div></section>
 
-    <div class="kpi-strip"><div class="container kpis" aria-label="Key figures"><div class="kpi"><strong id="annualAttendance">3,072</strong><span title="Sum of session attendance; a person can attend more than one session.">Attendances</span></div><div class="kpi"><strong id="learningHours">75</strong><span title="75 learning hours: 72.5 from supplied durations (including Bricks AI at 15 hours), plus estimates of 1.5 and 1 hour for the two remaining sessions.">Learning hours</span></div><div class="kpi"><strong id="distinctLearners">660</strong><span title="Identified people in the named attendance records; name variations are reconciled.">Unique learners</span></div><div class="kpi"><strong>$18,479</strong><span>Total cost</span></div></div></div>
+    <div class="kpi-strip"><div class="container kpis" aria-label="Key figures"><div class="kpi"><strong id="annualAttendance">3,072</strong><span title="Sum of session attendance; a person can attend more than one session.">Attendances</span></div><div class="kpi"><strong id="learningHours">75</strong><span title="75 learning hours: 72.5 from supplied durations (including Bricks AI at 15 hours), plus estimates of 1.5 and 1 hour for the two remaining sessions.">Learning hours</span></div><div class="kpi"><strong id="distinctLearners">659</strong><span title="Identified people in the named attendance records; name variations are reconciled.">Unique learners</span></div><div class="kpi"><strong>$18,479</strong><span>Total cost</span></div></div></div>
     <section class="section dark" id="sessions"><div class="container"><div class="section-head reveal"><h2>Total Session Attendances Per Topic</h2></div><div class="catalog-filters reveal" id="topicFilters" aria-label="Filter topics by theme"></div><div class="catalog-grid" id="topicGrid"></div></div></section>
     <section class="section lb-photos" id="learning-photos" aria-label="Learning Bites posters"><div class="container">
       <div class="lb-photos-head"><div class="lb-photos-controls"><button class="lb-arrow" id="lbPrev" type="button" aria-label="Previous posters" disabled>←</button><button class="lb-arrow" id="lbNext" type="button" aria-label="Next posters">→</button></div></div>
@@ -261,7 +261,7 @@
     const tally=(values)=>{const o={};values.forEach(x=>{o[x]=(o[x]||0)+1});return o};
     const uniqueClusterCounts=tally(selected.map(p=>p.cluster));
     const clusterEntries=ordered(uniqueClusterCounts),clusterMax=clusterEntries[0]?.[1]||1;
-    $('uniqueClusterBars').innerHTML=clusterEntries.map(([name,count])=>`<div class="bar-row"><div class="bar-label"><span>${esc(name)}</span><b>${count} <small class="unique-share">(${pct(count,660)})</small></b></div><div class="bar-bg"><div class="bar-fg" style="width:${100*count/clusterMax}%"></div></div></div>`).join('');
+    $('uniqueClusterBars').innerHTML=clusterEntries.map(([name,count])=>`<div class="bar-row"><div class="bar-label"><span>${esc(name)}</span><b>${count} <small class="unique-share">(${pct(count,data.distinctLearners)})</small></b></div><div class="bar-bg"><div class="bar-fg" style="width:${100*count/clusterMax}%"></div></div></div>`).join('');
     const topicCounts={};selected.forEach(p=>p.sessions.forEach(s=>{topicCounts[s]=(topicCounts[s]||0)+1}));
     makeBars($('uniqueTopicBars'),topicCounts,Object.keys(data.sessions).length);
   }
@@ -277,12 +277,10 @@
     const clusters=ordered(data.clusters).map(x=>x[0]).filter(x=>mapped(x)&&(!clusterFilter||x===clusterFilter));
     const sessions=ordered(data.sessions).map(x=>x[0]).filter(x=>(!sessionFilter||x===sessionFilter)&&(!themeFilter||data.sessionThemes[x]===themeFilter));
     const max=Math.max(1,...clusters.flatMap(c=>sessions.map(s=>(functionFilter?data.clusterFunctionSession[c]?.[functionFilter]?.[s]:data.clusterSession[c]?.[s])||0)));
-    const header=`<thead><tr><th scope="col">Cluster</th>${sessions.map(s=>`<th scope="col"><span class="abbr" title="${esc(s)}">${esc(shortNames[s]||s)}</span></th>`).join('')}<th scope="col">Total</th></tr></thead>`;
-    const body=`<tbody>${clusters.map(c=>{const values=sessions.map(s=>(functionFilter?data.clusterFunctionSession[c]?.[functionFilter]?.[s]:data.clusterSession[c]?.[s])||0);return `<tr><td>${esc(c)}</td>${values.map(n=>`<td class="cell ${n?'':'zero'}" style="${n?`background:rgba(124,204,191,${(.2+.72*n/max).toFixed(3)})`:''}" title="${esc(c)}: ${n}"><span>${n||'·'}</span></td>`).join('')}<td class="cell" style="background:#e4e2f3">${values.reduce((a,b)=>a+b,0)}</td></tr>`}).join('')}</tbody>`;
-    const totals=sessions.map(s=>clusters.reduce((sum,c)=>sum+((functionFilter?data.clusterFunctionSession[c]?.[functionFilter]?.[s]:data.clusterSession[c]?.[s])||0),0));
-    const foot=`<tfoot><tr><td>Total</td>${totals.map(n=>`<td class="cell">${n}</td>`).join('')}<td class="cell">${totals.reduce((a,b)=>a+b,0)}</td></tr></tfoot>`;
+    const header=`<thead><tr><th scope="col">Cluster</th>${sessions.map(s=>`<th scope="col"><span class="abbr" title="${esc(s)}">${esc(shortNames[s]||s)}</span></th>`).join('')}</tr></thead>`;
+    const body=`<tbody>${clusters.map(c=>{const values=sessions.map(s=>(functionFilter?data.clusterFunctionSession[c]?.[functionFilter]?.[s]:data.clusterSession[c]?.[s])||0);return `<tr><td>${esc(c)}</td>${values.map(n=>`<td class="cell ${n?'':'zero'}" style="${n?`background:rgba(124,204,191,${(.2+.72*n/max).toFixed(3)})`:''}" title="${esc(c)}: ${n}"><span>${n||'·'}</span></td>`).join('')}</tr>`}).join('')}</tbody>`;
     $('heatmap').style.minWidth=sessions.length>8?`${170+sessions.length*100}px`:'850px';
-    $('heatmap').innerHTML='<caption style="text-align:left;font-weight:700;color:var(--navy);padding:0 8px 10px">Cluster × Learning Bite</caption>'+header+body+foot;
+    $('heatmap').innerHTML='<caption style="text-align:left;font-weight:700;color:var(--navy);padding:0 8px 10px">Cluster × Learning Bite</caption>'+header+body;
   }
   function renderExplore(data){
     renderMatrix(data,$('clusterFilter').value,$('sessionFilter').value,$('functionFilter').value,$('themeFilter').value);
@@ -310,7 +308,7 @@
     const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}}),{threshold:.07});
     document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   }
-  fetch('./data.json?v=20261029-nav-months').then(r=>{if(!r.ok)throw Error('Data unavailable');return r.json()}).then(init).catch(e=>{console.error(e);$('explore').insertAdjacentHTML('afterbegin','<div class="container"><p role="alert">The interactive data could not load. Please refresh the page.</p></div>')});
+  fetch('./data.json?v=20261030-zein-matrix').then(r=>{if(!r.ok)throw Error('Data unavailable');return r.json()}).then(init).catch(e=>{console.error(e);$('explore').insertAdjacentHTML('afterbegin','<div class="container"><p role="alert">The interactive data could not load. Please refresh the page.</p></div>')});
   const links=[...document.querySelectorAll('.nav a[href^="#"]')];
   function onScroll(){const max=document.documentElement.scrollHeight-innerHeight;$('progress').style.width=(max?100*scrollY/max:0)+'%';let current='';for(const a of [...links].sort((a,b)=>document.querySelector(a.getAttribute('href')).offsetTop-document.querySelector(b.getAttribute('href')).offsetTop)){const el=document.querySelector(a.getAttribute('href'));if(el&&el.getBoundingClientRect().top<innerHeight*.35)current=a.getAttribute('href')}links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')===current))}
   addEventListener('scroll',onScroll,{passive:true});onScroll();
