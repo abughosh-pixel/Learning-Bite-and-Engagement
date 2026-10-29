@@ -172,11 +172,12 @@
 </style><style>
 @media(min-width:901px){
   .hero{min-height:calc(100svh - 74px)}
-  .hero .container{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto 360px auto;justify-items:center;align-content:center;gap:25px;min-height:calc(100svh - 74px);padding:48px 0}
-  .hero-copy{display:contents}
-  .hero h1{grid-column:1;grid-row:1;text-align:center;margin:0;font-size:clamp(2.8rem,4.2vw,4.7rem);white-space:nowrap}.hero h1 span{margin-left:.12em}
-  .hero .orbit{grid-column:1;grid-row:2;width:360px;margin:auto}
-  .hero .primary-btn{grid-column:1;grid-row:3;justify-self:center}
+  .hero .container{width:min(1600px,calc(100% - clamp(36px,8.4vw,152px)));display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.7fr);grid-template-rows:1fr;align-items:center;gap:clamp(24px,3vw,60px);min-height:calc(100svh - 74px);padding:48px 0}
+  .hero-copy{display:block;grid-column:1;grid-row:1}
+  .hero h1{font-size:clamp(3rem,5.8vw,7.4rem);line-height:.99;letter-spacing:-.078em;white-space:nowrap;text-align:left;margin:0 0 30px}
+  .hero h1 span{display:block;margin-left:0;white-space:nowrap}
+  .hero .orbit{grid-column:2;grid-row:1;width:min(100%,540px);margin:auto}
+  .hero .primary-btn{justify-self:auto}
 }
 #unique .unique-grids{align-items:stretch}
 #unique .unique-grids>.panel:first-child{display:flex;flex-direction:column}
