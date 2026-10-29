@@ -183,10 +183,14 @@
 #unique .unique-grids>.panel:first-child{display:flex;flex-direction:column}
 #uniqueClusterBars{display:flex;flex-direction:column;justify-content:space-between;flex:1;gap:10px}
 @media(max-width:1050px){#unique .unique-grids>.panel:first-child{min-height:0}}
-</style><style>#people h2{font-size:clamp(1.65rem,3.35vw,2.9rem)}</style></head>
+</style><style>#people h2{font-size:clamp(1.65rem,3.35vw,2.9rem)}
+  #themes,#geography,#people,#learners,#explore{padding-top:clamp(54px,6vw,88px);padding-bottom:clamp(54px,6vw,88px)}
+  #themes .section-head,#geography .section-head,#people .section-head,#learners .section-head,#explore .section-head{margin-bottom:26px}
+  @media(max-width:680px){#themes,#geography,#people,#learners,#explore{padding-top:54px;padding-bottom:54px}}
+</style></head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
-  <header class="topbar"><a class="brand" href="#top" aria-label="Fine Hygienic Holding — back to top"><img src="./finehh-logo.png" alt="Fine Hygienic Holding" width="147" height="70"></a><nav class="nav" aria-label="Main navigation"><a href="#sessions">Sessions</a><a href="#geography">Reach</a><a href="#learners">Top learners</a><a href="#engagement">Engagement</a><a href="#explore" class="explore-link">Explore the data ↗</a></nav></header>
+  <header class="topbar"><a class="brand" href="#top" aria-label="Fine Hygienic Holding — back to top"><img src="./finehh-logo.png" alt="Fine Hygienic Holding" width="147" height="70"></a><nav class="nav" aria-label="Main navigation"><a href="#sessions">Overview</a><a href="#unique">Analysis</a><a href="#learners">Top learners</a><a href="#engagement">Engagement</a><a href="#explore" class="explore-link">Explore the data ↗</a></nav></header>
   <div class="progress" id="progress" aria-hidden="true"></div>
   <main id="main">
     <section class="hero" id="top"><div class="container">
@@ -306,7 +310,7 @@
     const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}}),{threshold:.07});
     document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   }
-  fetch('./data.json?v=20261029-ordered-hours').then(r=>{if(!r.ok)throw Error('Data unavailable');return r.json()}).then(init).catch(e=>{console.error(e);$('explore').insertAdjacentHTML('afterbegin','<div class="container"><p role="alert">The interactive data could not load. Please refresh the page.</p></div>')});
+  fetch('./data.json?v=20261029-nav-months').then(r=>{if(!r.ok)throw Error('Data unavailable');return r.json()}).then(init).catch(e=>{console.error(e);$('explore').insertAdjacentHTML('afterbegin','<div class="container"><p role="alert">The interactive data could not load. Please refresh the page.</p></div>')});
   const links=[...document.querySelectorAll('.nav a[href^="#"]')];
   function onScroll(){const max=document.documentElement.scrollHeight-innerHeight;$('progress').style.width=(max?100*scrollY/max:0)+'%';let current='';for(const a of [...links].sort((a,b)=>document.querySelector(a.getAttribute('href')).offsetTop-document.querySelector(b.getAttribute('href')).offsetTop)){const el=document.querySelector(a.getAttribute('href'));if(el&&el.getBoundingClientRect().top<innerHeight*.35)current=a.getAttribute('href')}links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')===current))}
   addEventListener('scroll',onScroll,{passive:true});onScroll();
