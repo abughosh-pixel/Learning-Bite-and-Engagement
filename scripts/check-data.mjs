@@ -21,17 +21,21 @@ for(const [cluster,n] of Object.entries(data.clusters)){
 }
 for(const [session,n] of Object.entries(data.sessions)){
   assert.equal(Object.values(data.clusterSession).reduce((n,o)=>n+(o[session]||0),0),n,session);
-  const t=data.topics.find(t=>t.detailKey===session);assert(t,session);assert.equal(t.detailed,n);assert(t.sessionAttendance>=n);
+  const t=data.topics.find(t=>t.detailKey===session);assert(t,session);assert.equal(t.detailed,n);assert.equal(t.sessionAttendance,t.originalSessionAttendance);
 }
 for(const [fun,n] of Object.entries(data.functions))assert.equal(Object.values(data.clusterFunctionSession).reduce((n,o)=>n+nestedSum(o[fun]||{}),0),n,fun);
 for(const [unit,n] of Object.entries(data.businessUnits))assert.equal(sum(data.unitSession[unit]),n,unit);
 assert.equal(data.uniqueLearners.reduce((n,p)=>n+p.occurrences,0),data.total);
 for(const p of data.uniqueLearners){assert.equal(new Set(p.sessions).size,p.sessions.length,p.name);assert(p.occurrences>=p.sessions.length);assert(p.sessions.every(s=>data.sessions[s]>0));}
+assert.equal(data.knownAttendance,3111);
+assert.equal(data.distinctLearners,572);
 const person=name=>{const matches=data.uniqueLearners.filter(p=>p.name===name);assert.equal(matches.length,1,name);return matches[0];};
 for(const name of ['Tamara Elias Marar','Shadi Haddad']){
   const p=person(name);assert.equal(p.sessions.length,39);assert.equal(p.occurrences,39);assert.equal(p.topLearnerEligible,false);
   assert(!data.topLearners.some(p=>p.name===name));
 }
+assert.equal(person('Mina Atef Fawzy Habib').sessions.length,5);
+assert(!data.uniqueLearners.some(p=>p.name==='Mena Atef'));
 assert.equal(person('Arwa Salah Sanad Al Sammour').sessions.length,5);
 assert.equal(person('Tasnim Faisal Ahmad Al Kderat').sessions.length,2);
 assert(!data.uniqueLearners.some(p=>['Arwa AlSammour','Tasnim AlKderat','Mohammad Suleiman Mousa Abu Dawood'].includes(p.name)));
