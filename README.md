@@ -1,7 +1,12 @@
-# Learning Bite and Engagement
+# Learning Bites Analysis
 
-Fine Hygienic Holding — 2026 Learning Bites and engagement activities.
+Owner-reviewed attendance and identity corrections, approved30October2026.
 
-As of 30 October 2026: 573 identified learners, 2,612 named attendance occurrences across 39 completed Learning Bites, and 3,132 total session attendances. The catalogue contains 43 sessions, including four upcoming sessions.
+-572unique learners;2610cleaned person/session attendances.
+-3131overview attendances:sum of MAX(original reported,cleaned named) per completed session. Original reported total3111retained separately.
+-39completed sessions;4upcoming;43catalogue entries.
+-75learning hours;USD18479cost.
+-Tamara Elias Marar and Shadi Haddad included in all39completed sessions and excluded from Top10.
+-Two repeated person/session occurrences excluded from cleaned analysis; original evidence preserved in audit.
 
-Tamara Elias Marar and Shadi Haddad attend all completed sessions as administrators. Both are included in attendance and excluded from Top Learners. Original attendance aggregates are retained in data.json; a corrected named count becomes the total-session floor when larger.
+Run node scripts/check-data.mjs to verify totals,rollups,identity controls and approved corrections.
